@@ -1060,18 +1060,18 @@ async def give_role(call: CallbackQuery):
 
 
     db.commit()
-    target = get_user(action["target"])
+
+target = get_user(action["target"])
 
 add_log(
     f"{get_user(call.from_user.id)[2]} "
     f"видав роль {role} бійцю {target[2]}"
 )
 
-
-    actions.pop(
-        call.from_user.id,
-        None
-    )
+actions.pop(
+    call.from_user.id,
+    None
+)
 
 
     await call.message.edit_text(
