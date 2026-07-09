@@ -1199,6 +1199,109 @@ async def events_menu(call: CallbackQuery):
 @dp.callback_query(
     lambda c: c.data.startswith("event_")
 )
+@dp.callback_query(
+    lambda c: c.data.startswith("join_")
+)
+async def join_event(call: CallbackQuery):
+
+    if not check_menu_owner(call):
+        return
+
+    event_id = int(
+        call.data.split("_")[1]
+    )
+
+    user_id = call.from_user.id
+
+    cursor.execute(
+        """
+        SELECT id
+        FROM event_members
+        WHERE event_id=? AND user_id=?
+        """,
+        (
+            event_id,
+            user_id
+        )
+    )
+
+    exists = cursor.fetchone()
+
+    if exists:
+
+        await call.answer(
+            "Ви вже записані на подію",
+            show_alert=True
+        )
+        return
+
+
+    cursor.execute(
+        """
+        INSERT INTO event_members(
+            event_id,
+            user_id,
+            status
+        )
+        VALUES (?, ?, ?)
+        """,
+        (
+            event_id,
+            user_id,
+            "joined"
+        )
+    )
+
+    db.commit()
+
+
+    add_log(
+        f"{get_user(user_id)[2]} "
+        f"записався на подію"
+    )
+
+
+    await call.answer(
+        "✅ Ви записані"
+    )
+@dp.callback_query(
+    lambda c: c.data.startswith("leave_")
+)
+async def leave_event(call: CallbackQuery):
+
+    if not check_menu_owner(call):
+        return
+
+    event_id = int(
+        call.data.split("_")[1]
+    )
+
+    user_id = call.from_user.id
+
+
+    cursor.execute(
+        """
+        DELETE FROM event_members
+        WHERE event_id=? AND user_id=?
+        """,
+        (
+            event_id,
+            user_id
+        )
+    )
+
+    db.commit()
+
+
+    add_log(
+        f"{get_user(user_id)[2]} "
+        f"відмовився від події"
+    )
+
+
+    await call.answer(
+        "❌ Ви більше не берете участь"
+    ) 
 async def open_event(call: CallbackQuery):
 
     if not check_menu_owner(call):
