@@ -1215,7 +1215,7 @@ async def join_event(call: CallbackQuery):
 
     cursor.execute(
         """
-        SELECT id
+        SELECT event_id
         FROM event_members
         WHERE event_id=? AND user_id=?
         """,
