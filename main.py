@@ -395,46 +395,46 @@ def main_menu(user_id):
     keyboard = []
 
 
-    if is_admin(user_id):
+   if is_admin(user_id):
 
-        keyboard.extend([
-            [
-                InlineKeyboardButton(
-                    text="🪖 Особовий склад",
-                    callback_data="staff"
-                )
-            ],
-            [
-                InlineKeyboardButton(
-                    text="🎖 Керування ролями",
-                    callback_data="roles"
-                )
-            ],
-            [
-                InlineKeyboardButton(
-                    text="✏️ Змінити нік бійця",
-                    callback_data="change_nick"
-                )
-            ]
-            [
-    InlineKeyboardButton(
-        text="📅 Події",
-        callback_data="events"
-    )
-],
-[
-    InlineKeyboardButton(
-        text="📜 Журнал",
-        callback_data="logs"
-    )
-],
-[
-    InlineKeyboardButton(
-        text="📢 Оголошення",
-        callback_data="announce"
-    )
-]
-        ])
+    keyboard.extend([
+        [
+            InlineKeyboardButton(
+                text="🪖 Особовий склад",
+                callback_data="staff"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="🎖 Керування ролями",
+                callback_data="roles"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="✏️ Змінити нік бійця",
+                callback_data="change_nick"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="📅 Події",
+                callback_data="events"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="📜 Журнал",
+                callback_data="logs"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="📢 Оголошення",
+                callback_data="announce"
+            )
+        ]
+    ]) 
 
 
 
