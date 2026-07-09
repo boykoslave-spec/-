@@ -1689,33 +1689,13 @@ async def text_handler(message: Message):
                 event_date,
                 event_time,
                 created
-            )
-            VALUES (?, ?, ?, ?, ?)
-            """,
             (
-                action["title"],
-                action["description"],
-                try:
-    date_obj = datetime.strptime(
-        message.text,
-        "%d.%m.%Y"
-    )
-
-    if date_obj.date() < datetime.now().date():
-        await message.answer(
-            "❌ Не можна створити подію в минулому."
-        )
-        return
-
-except:
-    await message.answer(
-        "❌ Невірна дата.\n\nПриклад: 15.07.2026"
-    )
-    return
-
-action["event_date"] = message.text
-                int(time.time())
-            )
+    action["title"],
+    action["description"],
+    action["event_date"],
+    message.text,
+    int(time.time())
+)
         )
 
         db.commit()
