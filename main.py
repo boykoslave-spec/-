@@ -1880,34 +1880,28 @@ async def setup_commands():
 
 
 # =========================
-# BOT START
+# START
 # =========================
-
 
 async def main():
 
     print("BOT STARTING...")
 
-
     await setup_commands()
-
 
     await bot.delete_webhook(
         drop_pending_updates=True
     )
 
-
     print("POLLING STARTED")
 
     asyncio.create_task(
-    event_notifications()
+        event_notifications()
     )
 
-await dp.start_polling(bot)
-
+    await dp.start_polling(bot)
 
 
 if __name__ == "__main__":
 
     asyncio.run(main())
-  
