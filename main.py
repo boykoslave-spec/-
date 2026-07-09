@@ -1196,7 +1196,7 @@ async def events_menu(call: CallbackQuery):
             inline_keyboard=buttons
         )
     )
-    @dp.callback_query(
+@dp.callback_query(
     lambda c: c.data == "create_event"
 )
 async def create_event(call: CallbackQuery):
