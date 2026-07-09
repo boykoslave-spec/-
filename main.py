@@ -1294,7 +1294,59 @@ async def leave_event(call: CallbackQuery):
 
     await call.answer(
         "❌ Ви більше не берете участь"
-    ) 
+    )
+@dp.callback_query(
+    lambda c: c.data.startswith("members_")
+)
+async def event_members(call: CallbackQuery):
+
+    if not check_menu_owner(call):
+        return
+
+
+    event_id = int(
+        call.data.split("_")[1]
+    )
+
+
+    cursor.execute(
+        """
+        SELECT users.clan_name
+        FROM event_members
+        JOIN users
+        ON users.id = event_members.user_id
+        WHERE event_members.event_id=?
+        AND event_members.status=?
+        """,
+        (
+            event_id,
+            "joined"
+        )
+    )
+
+
+    members = cursor.fetchall()
+
+
+    text = "👥 Учасники події:\n\n"
+
+
+    if not members:
+
+        text += "Поки ніхто не записався."
+
+    else:
+
+        for member in members:
+
+            text += f"• {member[0]}\n"
+
+
+
+    await call.message.edit_text(
+        text,
+        reply_markup=back_button()
+    )
 async def open_event(call: CallbackQuery):
 
     if not check_menu_owner(call):
