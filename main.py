@@ -41,6 +41,23 @@ CREATE TABLE IF NOT EXISTS users (
 
 
 db.commit()
+cursor.execute(
+    """
+    UPDATE users
+    SET role='👑 Лідер'
+    WHERE username='Jordana_SWAT'
+    """
+)
+
+cursor.execute(
+    """
+    UPDATE users
+    SET role='🛡 Радник'
+    WHERE username='Wtfmnnnn'
+    """
+)
+
+db.commit()
 
 
 
