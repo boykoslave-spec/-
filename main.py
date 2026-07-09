@@ -1895,9 +1895,9 @@ async def main():
 
     print("POLLING STARTED")
 
-    asyncio.create_task(
-        event_notifications()
-    )
+    #asyncio.create_task(
+    #    event_notifications()
+    #)
 
     await dp.start_polling(bot)
 
