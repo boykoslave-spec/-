@@ -27,7 +27,8 @@ menu = ReplyKeyboardMarkup(
 
 @dp.message(Command("start"))
 async def start(message: Message):
-    await message.answer("🛡️ Вас вітає ЗСУ 🎯!")
+    await message.answer(
+        "🛡️ Вас вітає ЗСУ 🎯!")
 
 
 async def main():
