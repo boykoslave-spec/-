@@ -1879,8 +1879,101 @@ async def setup_commands():
 
 
 async def event_notifications():
+
     while True:
-        print("Перевіряю події...")
+
+        now = int(time.time())
+
+        cursor.execute("""
+            SELECT *
+            FROM events
+        """)
+
+        events = cursor.fetchall()
+
+        for event in events:
+
+            event_id = event[0]
+            title = event[1]
+            event_date = event[3]
+            event_time = event[4]
+            remind15 = event[5]
+            started = event[7]
+
+            try:
+                event_ts = int(
+                    datetime.strptime(
+                        f"{event_date} {event_time}",
+                        "%d.%m.%Y %H:%M"
+                    ).timestamp()
+                )
+            except:
+                continue
+
+            # нагадування за 15 хвилин
+            if (
+                remind15 == 0
+                and 0 < event_ts - now <= 900
+            ):
+
+                cursor.execute("""
+                    SELECT user_id
+                    FROM event_members
+                    WHERE event_id=?
+                    AND status='joined'
+                """, (event_id,))
+
+                users = cursor.fetchall()
+
+                for user in users:
+                    try:
+                        await bot.send_message(
+                            user[0],
+                            f"⏰ До події «{title}» залишилось 15 хвилин."
+                        )
+                    except:
+                        pass
+
+                cursor.execute("""
+                    UPDATE events
+                    SET remind15=1
+                    WHERE id=?
+                """, (event_id,))
+
+                db.commit()
+
+            # подія почалась
+            if (
+                started == 0
+                and now >= event_ts
+            ):
+
+                cursor.execute("""
+                    SELECT user_id
+                    FROM event_members
+                    WHERE event_id=?
+                    AND status='joined'
+                """, (event_id,))
+
+                users = cursor.fetchall()
+
+                for user in users:
+                    try:
+                        await bot.send_message(
+                            user[0],
+                            f"📢 Подія «{title}» розпочалась!"
+                        )
+                    except:
+                        pass
+
+                cursor.execute("""
+                    UPDATE events
+                    SET started=1
+                    WHERE id=?
+                """, (event_id,))
+
+                db.commit()
+
         await asyncio.sleep(30)
 # =========================
 # START
