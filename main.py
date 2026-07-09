@@ -1041,9 +1041,6 @@ async def give_role(call: CallbackQuery):
 
     if not action:
         return
-
-
-
     cursor.execute(
         """
         UPDATE users
@@ -1056,20 +1053,24 @@ async def give_role(call: CallbackQuery):
             level,
             action["target"]
         )
-    ).
-        db.commit()
+    )
+
+    db.commit()
 
     target = get_user(action["target"])
 
     add_log(
-    f"{get_user(call.from_user.id)[2]} "
-    f"видав роль {role} бійцю {target[2]}"
-)
+        f"{get_user(call.from_user.id)[2]} "
+        f"видав роль {role} бійцю {target[2]}"
+    )
 
     actions.pop(
-    call.from_user.id,
-    None
-)
+        call.from_user.id,
+        None
+    )
+
+
+
 
 
     await call.message.edit_text(
