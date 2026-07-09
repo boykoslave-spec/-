@@ -1196,6 +1196,65 @@ async def events_menu(call: CallbackQuery):
             inline_keyboard=buttons
         )
     )
+    @dp.callback_query(
+    lambda c: c.data.startswith("event_")
+)
+async def open_event(call: CallbackQuery):
+
+    if not check_menu_owner(call):
+        return
+
+    event_id = int(
+        call.data.split("_")[1]
+    )
+
+    cursor.execute(
+        """
+        SELECT *
+        FROM events
+        WHERE id=?
+        """,
+        (event_id,)
+    )
+
+    event = cursor.fetchone()
+
+    if not event:
+        await call.answer(
+            "Подію не знайдено",
+            show_alert=True
+        )
+        return
+
+
+    await call.message.edit_text(
+        f"📅 {event[1]}\n\n"
+        f"📝 {event[2]}\n\n"
+        f"📆 Дата: {event[3]}\n"
+        f"🕒 Час: {event[4]}",
+        reply_markup=InlineKeyboardMarkup(
+            inline_keyboard=[
+                [
+                    InlineKeyboardButton(
+                        text="✅ Я буду",
+                        callback_data=f"join_{event_id}"
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        text="❌ Не буду",
+                        callback_data=f"leave_{event_id}"
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        text="⬅️ Назад",
+                        callback_data="events"
+                    )
+                ]
+            ]
+        )
+    )
 @dp.callback_query(
     lambda c: c.data == "create_event"
 )
