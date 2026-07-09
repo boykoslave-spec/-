@@ -620,15 +620,16 @@ async def back(call: CallbackQuery):
         )
 
         return
-try:
-    await call.message.edit_text(
-        "🛡️ Головне меню",
-        reply_markup=main_menu(
-            call.from_user.id
+
+    try:
+        await call.message.edit_text(
+            "🛡️ Головне меню",
+            reply_markup=main_menu(
+                call.from_user.id
+            )
         )
-    )
-except:
-    pass
+    except:
+        pass
   # =========================
 # PROFILE
 # =========================
