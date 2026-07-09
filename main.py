@@ -251,7 +251,6 @@ def register_user(message: Message):
     )
 
     db.commit()
-    add_log(
     
 
 
