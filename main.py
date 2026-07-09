@@ -1074,7 +1074,55 @@ async def give_role(call: CallbackQuery):
     )
 
 
+# =========================
+# LOGS
+# =========================
 
+@dp.callback_query(
+    lambda c: c.data == "logs"
+)
+async def logs_menu(call: CallbackQuery):
+
+    if not check_menu_owner(call):
+
+        await call.answer(
+            "❌ Це не ваше меню",
+            show_alert=True
+        )
+
+        return
+
+
+    if not is_admin(call.from_user.id):
+        return
+
+
+    cursor.execute(
+        """
+        SELECT text
+        FROM logs
+        ORDER BY id DESC
+        LIMIT 20
+        """
+    )
+
+    rows = cursor.fetchall()
+
+
+    text = "📜 Журнал дій\n\n"
+
+
+    if not rows:
+        text += "Журнал порожній."
+    else:
+        for row in rows:
+            text += f"• {row[0]}\n"
+
+
+    await call.message.edit_text(
+        text,
+        reply_markup=back_button()
+    )
 # =========================
 # CHANGE FIGHTER NICK
 # =========================
