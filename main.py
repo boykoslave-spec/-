@@ -242,7 +242,8 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())from aiogram import Bot, Dispatcher
+    asyncio.run(main())
+from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
 from aiogram.types import (
     Message,
