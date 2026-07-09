@@ -1056,19 +1056,17 @@ async def give_role(call: CallbackQuery):
             level,
             action["target"]
         )
-    )
+    ).
+        db.commit()
 
+    target = get_user(action["target"])
 
-    db.commit()
-
-target = get_user(action["target"])
-
-add_log(
+    add_log(
     f"{get_user(call.from_user.id)[2]} "
     f"видав роль {role} бійцю {target[2]}"
 )
 
-actions.pop(
+    actions.pop(
     call.from_user.id,
     None
 )
