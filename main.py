@@ -1130,9 +1130,9 @@ async def logs_menu(call: CallbackQuery):
         reply_markup=back_button()
     )
     @dp.callback_query(
-    lambda c: c.data == "events"
+        lambda c: c.data == "events"
 )
-async def events_menu(call: CallbackQuery):
+    async def events_menu(call: CallbackQuery):
 
     if not check_menu_owner(call):
         return
