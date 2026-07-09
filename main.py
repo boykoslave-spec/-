@@ -2,6 +2,7 @@ import asyncio
 import os
 import sqlite3
 import time
+from datetime import datetime
 
 from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
@@ -1898,8 +1899,11 @@ async def main():
 
     print("POLLING STARTED")
 
+    asyncio.create_task(
+    event_notifications()
+    )
 
-    await dp.start_polling(bot)
+await dp.start_polling(bot)
 
 
 
