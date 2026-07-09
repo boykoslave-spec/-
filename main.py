@@ -46,6 +46,87 @@ CREATE TABLE IF NOT EXISTS users (
 
 
 db.commit()
+# =========================
+# NEW DATABASE TABLES
+# =========================
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    text TEXT,
+    created INTEGER
+)
+""")
+
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    description TEXT,
+    event_date TEXT,
+    event_time TEXT,
+    remind1 INTEGER DEFAULT 0,
+    remind15 INTEGER DEFAULT 0,
+    started INTEGER DEFAULT 0,
+    created INTEGER
+)
+""")
+
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS event_members (
+    event_id INTEGER,
+    user_id INTEGER,
+    status TEXT
+)
+""")
+
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS exchange_requests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    points INTEGER,
+    coins INTEGER,
+    created INTEGER
+)
+""")
+
+
+try:
+    cursor.execute(
+        "ALTER TABLE users ADD COLUMN points INTEGER DEFAULT 0"
+    )
+except:
+    pass
+
+
+try:
+    cursor.execute(
+        "ALTER TABLE users ADD COLUMN events_visited INTEGER DEFAULT 0"
+    )
+except:
+        pass
+
+
+try:
+    cursor.execute(
+        "ALTER TABLE users ADD COLUMN coins_received INTEGER DEFAULT 0"
+    )
+except:
+        pass
+
+
+try:
+    cursor.execute(
+        "ALTER TABLE users ADD COLUMN streak INTEGER DEFAULT 0"
+    )
+except:
+        pass
+
+
+db.commit()
 
 
 
@@ -63,6 +144,7 @@ ROLES = {
     "🔨 Головний Коваль": 6,
     "⚔️ Солдат": 7
 }
+POINT_PRICE = 100
 
 
 DEFAULT_ADMINS = {
@@ -197,6 +279,76 @@ def status_icon(last):
 
 
     return "🔴"
+    # =========================
+# NEW FUNCTIONS
+# =========================
+
+def add_log(text):
+
+    cursor.execute(
+        """
+        INSERT INTO logs(
+            text,
+            created
+        )
+        VALUES (?, ?)
+        """,
+        (
+            text,
+            int(time.time())
+        )
+    )
+
+    db.commit()
+
+
+def add_points(user_id, amount):
+
+    cursor.execute(
+        """
+        UPDATE users
+        SET points = points + ?
+        WHERE id = ?
+        """,
+        (
+            amount,
+            user_id
+        )
+    )
+
+    db.commit()
+
+
+def remove_points(user_id, amount):
+
+    cursor.execute(
+        """
+        UPDATE users
+        SET points = points - ?
+        WHERE id = ?
+        """,
+        (
+            amount,
+            user_id
+        )
+    )
+
+    db.commit()
+
+
+def add_event_visit(user_id):
+
+    cursor.execute(
+        """
+        UPDATE users
+        SET events_visited =
+        events_visited + 1
+        WHERE id = ?
+        """,
+        (user_id,)
+    )
+
+    db.commit()
   # =========================
 # MENU CHECK
 # =========================
@@ -249,6 +401,24 @@ def main_menu(user_id):
                     callback_data="change_nick"
                 )
             ]
+            [
+    InlineKeyboardButton(
+        text="📅 Події",
+        callback_data="events"
+    )
+],
+[
+    InlineKeyboardButton(
+        text="📜 Журнал",
+        callback_data="logs"
+    )
+],
+[
+    InlineKeyboardButton(
+        text="📢 Оголошення",
+        callback_data="announce"
+    )
+]
         ])
 
 
@@ -477,12 +647,15 @@ async def profile(call: CallbackQuery):
 
 
     await call.message.edit_text(
-        f"👤 Профіль\n\n"
-        f"Нік: {user[2]}\n"
-        f"Роль: {user[3]}\n"
-        f"Статус: {status_icon(user[5])}",
-        reply_markup=back_button()
-    )
+    f"👤 Профіль\n\n"
+    f"Нік: {user[2]}\n"
+    f"Роль: {user[3]}\n"
+    f"🪙 Бали: {user[6]}\n"
+    f"🏆 Подій відвідано: {user[7]}\n"
+    f"💰 Монет отримано: {user[8]}\n"
+    f"Статус: {status_icon(user[5])}",
+    reply_markup=back_button()
+)
 
 
 
