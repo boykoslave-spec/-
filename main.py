@@ -132,19 +132,28 @@ def register_user(user_id, username, fullname):
 
     user = cursor.fetchone()
 
-
     if not user:
+
+        role = "⚔️ Солдати"
+
+        if username == "Jordana_SWAT":
+            role = "👑 Лідер"
+
+        elif username == "Wtfmnnnn":
+            role = "🛡 Радник"
+
 
         cursor.execute(
             """
             INSERT INTO users
-            (id, username, fullname)
-            VALUES (?, ?, ?)
+            (id, username, fullname, role)
+            VALUES (?, ?, ?, ?)
             """,
             (
                 user_id,
                 username,
-                fullname
+                fullname,
+                role
             )
         )
 
