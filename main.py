@@ -1878,7 +1878,10 @@ async def setup_commands():
     )
 
 
-
+async def event_notifications():
+    while True:
+        print("Перевіряю події...")
+        await asyncio.sleep(30)
 # =========================
 # START
 # =========================
@@ -1895,9 +1898,9 @@ async def main():
 
     print("POLLING STARTED")
 
-    #asyncio.create_task(
-    #    event_notifications()
-    #)
+    asyncio.create_task(
+        event_notifications()
+    )
 
     await dp.start_polling(bot)
 
