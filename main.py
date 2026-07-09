@@ -1199,7 +1199,7 @@ async def events_menu(call: CallbackQuery):
     @dp.callback_query(
     lambda c: c.data == "create_event"
 )
-async def create_event(call: CallbackQuery):
+    async def create_event(call: CallbackQuery):
 
     if not check_menu_owner(call):
         return
