@@ -1357,27 +1357,25 @@ async def text_handler(message: Message):
 
 
         db.commit()
+
         target = get_user(
-    action["target"]
-)
+            action["target"]
+        )
 
-add_log(
-    f"{get_user(user_id)[2]} "
-    f"змінив нік бійцю {target[2]}"
-)
-
+        add_log(
+            f"{get_user(user_id)[2]} "
+            f"змінив нік бійцю {target[2]}"
+        )
 
         actions.pop(
             user_id,
             None
         )
 
-
         msg = await message.answer(
             "✅ Нік бійця змінено",
             reply_markup=main_menu(user_id)
         )
-
 
         menu_owner[
             msg.message_id
