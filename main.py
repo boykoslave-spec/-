@@ -1129,6 +1129,81 @@ async def logs_menu(call: CallbackQuery):
         text,
         reply_markup=back_button()
     )
+    @dp.callback_query(
+    lambda c: c.data == "events"
+)
+async def events_menu(call: CallbackQuery):
+
+    if not check_menu_owner(call):
+        return
+
+    buttons = []
+
+    if is_admin(call.from_user.id):
+        buttons.append(
+            [
+                InlineKeyboardButton(
+                    text="➕ Створити подію",
+                    callback_data="create_event"
+                )
+            ]
+        )
+
+    cursor.execute(
+        """
+        SELECT id, title, event_date, event_time
+        FROM events
+        ORDER BY id DESC
+        LIMIT 10
+        """
+    )
+
+    events = cursor.fetchall()
+
+    for event in events:
+        buttons.append(
+            [
+                InlineKeyboardButton(
+                    text=f"📅 {event[1]} | {event[2]} {event[3]}",
+                    callback_data=f"event_{event[0]}"
+                )
+            ]
+        )
+
+    buttons.append(
+        [
+            InlineKeyboardButton(
+                text="⬅️ Назад",
+                callback_data="back"
+            )
+        ]
+    )
+
+    await call.message.edit_text(
+        "📅 Події клану",
+        reply_markup=InlineKeyboardMarkup(
+            inline_keyboard=buttons
+        )
+    )
+    @dp.callback_query(
+    lambda c: c.data == "create_event"
+)
+async def create_event(call: CallbackQuery):
+
+    if not check_menu_owner(call):
+        return
+
+    if not is_admin(call.from_user.id):
+        return
+
+    actions[call.from_user.id] = {
+        "type": "create_event_title"
+    }
+
+    await call.message.edit_text(
+        "📅 Введіть назву події:",
+        reply_markup=cancel_button()
+    )
 # =========================
 # CHANGE FIGHTER NICK
 # =========================
