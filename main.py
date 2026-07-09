@@ -1192,6 +1192,82 @@ async def events_menu(call: CallbackQuery):
 @dp.callback_query(
     lambda c: c.data.startswith("event_")
 )
+async def open_event(call: CallbackQuery):
+
+    if not check_menu_owner(call):
+        return
+
+    event_id = int(call.data.split("_")[1])
+
+    cursor.execute(
+        """
+        SELECT *
+        FROM events
+        WHERE id=?
+        """,
+        (event_id,)
+    )
+
+    event = cursor.fetchone()
+
+    if not event:
+        await call.answer("Подію не знайдено")
+        return
+
+    cursor.execute(
+        """
+        SELECT COUNT(*)
+        FROM event_members
+        WHERE event_id=?
+        AND status=?
+        """,
+        (
+            event_id,
+            "joined"
+        )
+    )
+
+    members = cursor.fetchone()[0]
+
+    text = (
+        f"📅 {event[1]}\n\n"
+        f"📝 {event[2]}\n\n"
+        f"📆 {event[3]}\n"
+        f"🕒 {event[4]}\n"
+        f"👥 Учасники: {members}"
+    )
+
+    await call.message.edit_text(
+        text,
+        reply_markup=InlineKeyboardMarkup(
+            inline_keyboard=[
+                [
+                    InlineKeyboardButton(
+                        text="✅ Я буду",
+                        callback_data=f"join_{event_id}"
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        text="👥 Учасники",
+                        callback_data=f"members_{event_id}"
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        text="❌ Не буду",
+                        callback_data=f"leave_{event_id}"
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        text="⬅️ Назад",
+                        callback_data="events"
+                    )
+                ]
+            ]
+        )
+    )    
 @dp.callback_query(
     lambda c: c.data.startswith("join_")
 )
