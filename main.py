@@ -205,19 +205,34 @@ def register_user(message: Message):
 
 
         cursor.execute(
-            """
-            INSERT INTO users
-            VALUES (?, ?, ?, ?, ?, ?)
-            """,
-            (
-                user_id,
-                username,
-                None,
-                role,
-                level,
-                int(time.time())
-            )
-        )
+    """
+    INSERT INTO users(
+        id,
+        username,
+        clan_name,
+        role,
+        role_level,
+        last_online,
+        points,
+        events_visited,
+        coins_received,
+        streak
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """,
+    (
+        user_id,
+        username,
+        None,
+        role,
+        level,
+        int(time.time()),
+        0,
+        0,
+        0,
+        0
+    )
+)
 
         db.commit()
 
