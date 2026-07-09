@@ -251,6 +251,8 @@ def register_user(message: Message):
     )
 
     db.commit()
+    add_log(
+    
 
 
 
@@ -1059,6 +1061,12 @@ async def give_role(call: CallbackQuery):
 
 
     db.commit()
+    target = get_user(action["target"])
+
+add_log(
+    f"{get_user(call.from_user.id)[2]} "
+    f"видав роль {role} бійцю {target[2]}"
+)
 
 
     actions.pop(
@@ -1261,6 +1269,9 @@ async def text_handler(message: Message):
 
 
         db.commit()
+        add_log(
+    f"{get_user(user_id)[2]} змінив свій нік"
+)
 
 
         actions.pop(
@@ -1303,6 +1314,9 @@ async def text_handler(message: Message):
 
 
         db.commit()
+        add_log(
+    f"{get_user(user_id)[2]} змінив свій нік"
+)
 
 
         actions.pop(
@@ -1345,6 +1359,14 @@ async def text_handler(message: Message):
 
 
         db.commit()
+        target = get_user(
+    action["target"]
+)
+
+add_log(
+    f"{get_user(user_id)[2]} "
+    f"змінив нік бійцю {target[2]}"
+)
 
 
         actions.pop(
