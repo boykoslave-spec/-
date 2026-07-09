@@ -1333,7 +1333,95 @@ async def text_handler(message: Message):
     user_id = message.from_user.id
 
 
+    # створення події - назва
 
+    if action["type"] == "create_event_title":
+
+        actions[user_id] = {
+            "type": "create_event_description",
+            "title": message.text
+        }
+
+        await message.answer(
+            "📝 Введіть опис події:"
+        )
+
+        return
+            # створення події - опис
+
+    if action["type"] == "create_event_description":
+
+        actions[user_id] = {
+            "type": "create_event_date",
+            "title": action["title"],
+            "description": message.text
+        }
+
+        await message.answer(
+            "📅 Введіть дату події\n"
+            "Приклад: 10.07.2026"
+        )
+
+        return
+            # створення події - дата
+
+    if action["type"] == "create_event_date":
+
+        actions[user_id] = {
+            "type": "create_event_time",
+            "title": action["title"],
+            "description": action["description"],
+            "event_date": message.text
+        }
+
+        await message.answer(
+            "🕒 Введіть час події\n"
+            "Приклад: 20:00"
+        )
+
+        return
+            # створення події - час
+
+    if action["type"] == "create_event_time":
+
+        cursor.execute(
+            """
+            INSERT INTO events(
+                title,
+                description,
+                event_date,
+                event_time,
+                created
+            )
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (
+                action["title"],
+                action["description"],
+                action["event_date"],
+                message.text,
+                int(time.time())
+            )
+        )
+
+        db.commit()
+
+        add_log(
+            f"{get_user(user_id)[2]} "
+            f"створив подію {action['title']}"
+        )
+
+        actions.pop(
+            user_id,
+            None
+        )
+
+        await message.answer(
+            "✅ Подію створено",
+            reply_markup=main_menu(user_id)
+        )
+
+        return
     # перша реєстрація
 
     if action["type"] == "register":
