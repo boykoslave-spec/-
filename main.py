@@ -1125,14 +1125,25 @@ async def logs_menu(call: CallbackQuery):
             text += f"• {row[0]}\n"
 
 
-    await call.message.edit_text(
-        text,
-        reply_markup=back_button()
+        await call.message.edit_text(
+
+        "📅 Події клану",
+
+        reply_markup=InlineKeyboardMarkup(
+
+            inline_keyboard=buttons
+
+        )
+
     )
-    @dp.callback_query(
-        lambda c: c.data == "events"
+
+@dp.callback_query(
+
+    lambda c: c.data == "events"
+
 )
-    async def events_menu(call: CallbackQuery):
+
+async def events_menu(call: CallbackQuery):
 
     if not check_menu_owner(call):
         return
