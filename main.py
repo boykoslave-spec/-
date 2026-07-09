@@ -10,7 +10,8 @@ from aiogram.types import (
     CallbackQuery,
     InlineKeyboardMarkup,
     InlineKeyboardButton,
-    ReplyKeyboardRemove
+    ReplyKeyboardRemove,
+    BotCommand
 )
 
 
@@ -937,7 +938,22 @@ async def text_handler(message: Message):
         return
 
 
+# =========================
+# MENU COMMAND
+# =========================
 
+
+@dp.message(Command("menu"))
+async def menu_command(message: Message):
+
+    register_user(message)
+
+    await message.answer(
+        "🛡️ Головне меню",
+        reply_markup=main_menu(
+            message.from_user.id
+        )
+    )
 # =========================
 # START BOT
 # =========================
@@ -946,6 +962,16 @@ async def text_handler(message: Message):
 async def main():
 
     print("BOT STARTING...")
+    await bot.set_my_commands([
+    BotCommand(
+        command="start",
+        description="Запустити бота"
+    ),
+    BotCommand(
+        command="menu",
+        description="Відкрити меню"
+    )
+])
 
 
     await bot.delete_webhook(
