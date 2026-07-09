@@ -1349,6 +1349,12 @@ async def open_event(call: CallbackQuery):
                     )
                 ],
                 [
+    InlineKeyboardButton(
+        text="👥 Учасники",
+        callback_data=f"members_{event_id}"
+    )
+],
+                [
                     InlineKeyboardButton(
                         text="⬅️ Назад",
                         callback_data="events"
