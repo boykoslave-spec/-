@@ -620,10 +620,7 @@ async def back(call: CallbackQuery):
         )
 
         return
-
-
-
-    try:
+try:
     await call.message.edit_text(
         "🛡️ Головне меню",
         reply_markup=main_menu(
