@@ -1125,16 +1125,9 @@ async def logs_menu(call: CallbackQuery):
             text += f"• {row[0]}\n"
 
 
-        await call.message.edit_text(
-
-        "📅 Події клану",
-
-        reply_markup=InlineKeyboardMarkup(
-
-            inline_keyboard=buttons
-
-        )
-
+            await call.message.edit_text(
+        text,
+        reply_markup=back_button()
     )
 
 @dp.callback_query(
