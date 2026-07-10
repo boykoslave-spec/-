@@ -1675,9 +1675,21 @@ async def text_handler(message: Message):
             # створення події - час
 
     if action["type"] == "create_event_date":
-        return
 
-        cursor.execute(
+    action["event_date"] = message.text
+    action["type"] = "create_event_time"
+
+    await message.answer(
+        "🕒 Введіть час події.\n\nПриклад: 19:30"
+    )
+
+    return
+
+# створення події - час
+
+if action["type"] == "create_event_time":
+
+    cursor.execute(
         """
         INSERT INTO events(
             title,
@@ -1701,7 +1713,7 @@ async def text_handler(message: Message):
 
     add_log(
         f"{get_user(user_id)[2]} "
-        f"створив подію {action['title']}"
+        f"створив подію {action.get('title', 'Без назви')}"
     )
 
     actions.pop(
