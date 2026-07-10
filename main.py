@@ -1675,7 +1675,7 @@ async def text_handler(message: Message):
                 "❌ Не можна створити подію в минулому.\n\nПриклад: 15.07.2026"
                 )
                 return
-     except:
+        except:
         await message.answer(
             "❌ Невірний формат дати.\n\nПриклад: 15.07.2026"
         )
@@ -1697,7 +1697,7 @@ async def text_handler(message: Message):
                 message.text,
                 "%H:%M"
             )
- except:
+         except:
         await message.answer(
             "❌ Невірний формат часу.\n\nПриклад: 19:30"
         )
