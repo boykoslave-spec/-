@@ -1666,16 +1666,16 @@ async def text_handler(message: Message):
 
         try:
             date_obj = datetime.strptime(
-            message.text,
-            "%d.%m.%Y"
+                message.text,
+                "%d.%m.%Y"
             )
 
             if date_obj.date() < datetime.now().date():
-            await message.answer(
+                await message.answer(
                 "❌ Не можна створити подію в минулому.\n\nПриклад: 15.07.2026"
-            )
-            return
- except:
+                )
+                return
+     except:
         await message.answer(
             "❌ Невірний формат дати.\n\nПриклад: 15.07.2026"
         )
@@ -1688,17 +1688,16 @@ async def text_handler(message: Message):
         "🕒 Введіть час події.\n\nПриклад: 19:30"
     )
 
-
-        return
+    return
             # створення події - час
 
     if action["type"] == "create_event_time":
-            try:
-        datetime.strptime(
-            message.text,
-            "%H:%M"
-        )
-    except:
+        try:
+            datetime.strptime(
+                message.text,
+                "%H:%M"
+            )
+ except:
         await message.answer(
             "❌ Невірний формат часу.\n\nПриклад: 19:30"
         )
