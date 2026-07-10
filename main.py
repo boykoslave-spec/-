@@ -1659,19 +1659,7 @@ async def text_handler(message: Message):
             "Приклад: 10.07.2026"
         )
 
-        return
-            # створення події - дата
-
-    if action["type"] == "create_event_date":
-        action["event_date"] = message.text
-        action["type"] = "create_event_date"
-
-        await message.answer(
-            "🕒 Введіть дату події.\n\nПриклад: 10.06.2026"
-    )
-
-    return
-
+    return        
         
             # створення події - час
 
