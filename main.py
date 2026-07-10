@@ -1674,13 +1674,7 @@ async def text_handler(message: Message):
         return
             # створення події - час
 
-    if action["type"] == "create_event_time":
-        try:
-            datetime.strptime(
-                message.text,
-                "%H:%M"
-            )
-         
+    if action["type"] == "
         return
 
         cursor.execute(
