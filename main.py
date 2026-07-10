@@ -1668,8 +1668,8 @@ async def text_handler(message: Message):
         action["type"] = "create_event_time"
 
         await message.answer(
-        "🕒 Введіть час події.\n\nПриклад: 19:30"
-    )
+            "🕒 Введіть час події.\n\nПриклад: 19:30"
+        )
 
         return
             # створення події - час
@@ -1680,10 +1680,7 @@ async def text_handler(message: Message):
                 message.text,
                 "%H:%M"
             )
-         except:
-        await message.answer(
-            "❌ Невірний формат часу.\n\nПриклад: 19:30"
-        )
+         
         return
 
         cursor.execute(
