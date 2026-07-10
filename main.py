@@ -1664,19 +1664,18 @@ async def text_handler(message: Message):
 
     if action["type"] == "create_event_date":
 
-    try:
-        date_obj = datetime.strptime(
+        try:
+            date_obj = datetime.strptime(
             message.text,
             "%d.%m.%Y"
-        )
+            )
 
-        if date_obj.date() < datetime.now().date():
+            if date_obj.date() < datetime.now().date():
             await message.answer(
                 "❌ Не можна створити подію в минулому.\n\nПриклад: 15.07.2026"
             )
             return
-
-    except:
+ except:
         await message.answer(
             "❌ Невірний формат дати.\n\nПриклад: 15.07.2026"
         )
