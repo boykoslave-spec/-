@@ -1681,22 +1681,25 @@ async def text_handler(message: Message):
 
     if action["type"] == "create_event_time":
 
-        cursor.execute(
-            """
-            INSERT INTO events(
-                title,
-                description,
-                event_date,
-                event_time,
-                created
-            (
-    action["title"],
-    action["description"],
-    action["event_date"],
-    message.text,
-    int(time.time())
+cursor.execute(
+    """
+    INSERT INTO events(
+        title,
+        description,
+        event_date,
+        event_time,
+        created
+    )
+    VALUES (?, ?, ?, ?, ?)
+    """,
+    (
+        action["title"],
+        action["description"],
+        action["event_date"],
+        message.text,
+        int(time.time())
+    )
 )
-        )
 
         db.commit()
 
