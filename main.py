@@ -1717,7 +1717,7 @@ if action["type"] == "create_event_time":
         f"створив подію {action.get('title', 'Без назви')}"
     )
 
-    if actions.pop(
+    actions.pop(
         user_id,
         None
     )
