@@ -1681,7 +1681,7 @@ async def text_handler(message: Message):
 
     if action["type"] == "create_event_time":
 
-cursor.execute(
+    cursor.execute(
     """
     INSERT INTO events(
         title,
