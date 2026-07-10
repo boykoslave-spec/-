@@ -1663,15 +1663,16 @@ async def text_handler(message: Message):
             # створення події - дата
 
     if action["type"] == "create_event_date":
-
         action["event_date"] = message.text
-        action["type"] = "create_event_time"
+        action["type"] = "create_event_date"
 
         await message.answer(
-            "🕒 Введіть час події.\n\nПриклад: 19:30"
-        )
+            "🕒 Введіть дату події.\n\nПриклад: 10.06.2026"
+    )
 
-        return
+    return
+
+        
             # створення події - час
 
     if action["type"] == "create_event_date":
