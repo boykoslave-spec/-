@@ -1674,7 +1674,7 @@ async def text_handler(message: Message):
         return
             # створення події - час
 
-    if action["type"] == "
+    if action["type"] == "create_event_date":
         return
 
         cursor.execute(
