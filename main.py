@@ -1677,11 +1677,11 @@ async def text_handler(message: Message):
 
     if action["type"] == "create_event_date":
 
-    action["event_date"] = message.text
-    action["type"] = "create_event_time"
+        action["event_date"] = message.text
+        action["type"] = "create_event_time"
 
-    await message.answer(
-        "🕒 Введіть час події.\n\nПриклад: 19:30"
+        await message.answer(
+            "🕒 Введіть час події.\n\nПриклад: 19:30"
     )
 
     return
