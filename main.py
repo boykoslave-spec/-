@@ -1682,43 +1682,43 @@ async def text_handler(message: Message):
     if action["type"] == "create_event_time":
 
     cursor.execute(
-    """
-    INSERT INTO events(
-        title,
-        description,
-        event_date,
-        event_time,
-        created
+        """
+        INSERT INTO events(
+            title,
+            description,
+            event_date,
+            event_time,
+            created
+        )
+        VALUES (?, ?, ?, ?, ?)
+        """,
+        (
+            action["title"],
+            action["description"],
+            action["event_date"],
+            message.text,
+            int(time.time())
+        )
     )
-    VALUES (?, ?, ?, ?, ?)
-    """,
-    (
-        action["title"],
-        action["description"],
-        action["event_date"],
-        message.text,
-        int(time.time())
+
+    db.commit()
+
+    add_log(
+        f"{get_user(user_id)[2]} "
+        f"створив подію {action['title']}"
     )
-)
 
-        db.commit()
+    actions.pop(
+        user_id,
+        None
+    )
 
-        add_log(
-            f"{get_user(user_id)[2]} "
-            f"створив подію {action['title']}"
-        )
+    await message.answer(
+        "✅ Подію створено",
+        reply_markup=main_menu(user_id)
+    )
 
-        actions.pop(
-            user_id,
-            None
-        )
-
-        await message.answer(
-            "✅ Подію створено",
-            reply_markup=main_menu(user_id)
-        )
-
-        return
+    return
     # перша реєстрація
 
     if action["type"] == "register":
