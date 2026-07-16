@@ -18,7 +18,7 @@ from aiogram.types import (
 )
 from aiogram.exceptions import TelegramBadRequest
 
-TOKEN = "8929512025:AAHZNgQcaJkBj81FjDptbr5M"
+TOKEN ="8929512025:AAGWYvm3ZyB6v4VJAJq-IgGkNhTBHnnOp7U"
 
 if not TOKEN:
     raise ValueError("BOT_TOKEN не знайдений")
