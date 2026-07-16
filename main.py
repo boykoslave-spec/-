@@ -20,7 +20,7 @@ from aiogram.exceptions import TelegramBadRequest
 # =========================
 # ТОКЕН БОТА
 # =========================
-TOKEN = "8929512025:AAGWYvm3ZyB6v4VJAJq-IgGkNhTBHnnOp7U"
+TOKEN = "8929512025:AAGB5RQpXizREwCrro5TbfQB0c0Qss1CLH0"
 
 bot = Bot(TOKEN)
 dp = Dispatcher()
